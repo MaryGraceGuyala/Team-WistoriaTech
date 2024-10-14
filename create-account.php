@@ -1,38 +1,40 @@
 <?php
-include '../php/dbconnect.php';
-
-function adminSignup($firstName, $lastName, $email, $password) {
-    global $conn;
-
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO agap_admin (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $firstName, $lastName, $email, $hashedPassword);
-
-    if ($stmt->execute()) {
-        echo "New admin registered successfully";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-
-    $stmt->close();
-}
+include 'php/dbconnect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstName = $_POST['first_name'];
-    $lastName = $_POST['last_name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    if (isset($_POST['m_fname']) && isset($_POST['m_lname']) && isset($_POST['m_email']) && isset($_POST['mpassword']) && isset($_POST['cpassword'])) {
+        $fname = $_POST['m_fname'];
+        $lname = $_POST['m_lname'];
+        $email = $_POST['m_email'];
+        $password = $_POST['mpassword'];
+        $cpassword = $_POST['cpassword'];
 
-    adminSignup($firstName, $lastName, $email, $password);
+        if ($password == $cpassword) {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $sql = "INSERT INTO agap_members (m_fname, m_lname, m_email, mpassword) VALUES ('$fname', '$lname', '$email', '$hashed_password')";
+            if (mysqli_query($conn, $sql)) {
+                echo "<script>alert('Signup successful!');</script>";
+                header('Location: members_dashboard.php');
+                exit();
+            } else {
+                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            }
+        } else {
+            echo "Passwords do not match.";
+        }
+    } else {
+        echo "Please fill out all fields.";
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>LOGIN FOR ADMIN</title>
+    <title>Create your Account</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica&amp;display=swap">
@@ -53,31 +55,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <h1 style="font-family: Aclonica, sans-serif;color: rgb(255,255,255);">Welcome!</h1>
                             <p style="font-size: 19px;color: rgb(255,255,255);">Please enter your login details.</p>
                         </div>
-                        <form style="padding: 12px;">
+                        <form method="POST" action="create-account.php" style="padding: 12px;">
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <label for="first_name">First Name:</label>
-                                <input class="form-control" type="text" id="first_name" name="first_name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
+                             <input class="form-control" type="text" name="m_fname" placeholder="First Name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <label for="last_name">Last Name:</label>
-                                <input class="form-control" type="text" id="last_name" name="last_name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
+                                <input class="form-control" type="text" name="m_lname" placeholder="Last Name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <label for="email">Email:</label>
-                                <input class="form-control" type="text" id="email" name="email" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
+                            <input class="form-control" type="email" name="m_email" placeholder="Email Address" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <label for="password">Create Password:</label>
-                                <input class="form-control" type="password" id="password" name="password" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
+                            <input class="form-control" type="password" name="mpassword" placeholder="Create Password" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <label for="password">Confirm Password:</label>
-                                <input class="form-control" type="password" id="password" name="password" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
+                            <input class="form-control" type="password" name="cpassword" placeholder="Confirm Password" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
                             </div>
-                            <button class="btn btn-primary" type="button" style="margin-top: 10px;font-family: Aclonica, sans-serif;background: rgb(11,103,15);margin-bottom: 5PX;">SIGN UP</button>
+                            <button class="btn btn-primary" type="submit" style="margin-top: 10px;font-family: Aclonica, sans-serif;background: rgb(11,103,15);margin-bottom: 5PX;">SIGN UP</button>
                             <div>
                                 <span style="color: rgb(255,255,255);">Already have an account?&nbsp;</span>
-                                <a class="signup-nav" href="#">LOGIN&nbsp;</a></div>
+                                <a class="signup-nav" href="login.php">LOGIN&nbsp;</a></div>
                         </form>
                     </div>
                 </div>
@@ -85,9 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/script.js"></script>
 </body>
-
 </html>
+         
