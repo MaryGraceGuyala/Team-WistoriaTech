@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +34,129 @@
             </nav><a class="order-last" href="#donations" style="padding: 15px;color: rgb(255,255,255);background: #018f42;text-decoration: none;border-radius: 4px;padding-right: 5px;padding-top: 10px;padding-bottom: 10px;padding-left: 5px;">Donate Now</a>
         </div>
     </header>
-    <section class="section dashboard">
-        
+    <main class="main-index" id="main-index">
+    <section class="section dashboard" style="margin-top: 60px;padding: 12px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                         <div class="card-header">
+                             <h2>Help us to get to know you better. Please provide us with your contact information.</h2>
+                         </div>
+                         <div class="card-body">
+                            <form class="row" method="POST" action="donation-form.php" enctype="multipart/form-data" style="padding: 12px;">
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <h2>Donor Information</h2>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label for="donor_first_name" class="form-label">First Name</label>
+                                    <input type="text" name="donor_first_name" class="form-control" id="donor_first_name" required>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Middle Name:</label>
+                                    <input class="form-control" type="text" name="donor_middle_name">
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Last Name:</label>
+                                    <input class="form-control" type="text" name="donor_last_name" required>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Address:</label>
+                                    <input class="form-control" type="text" name="address" required>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Age:</label>
+                                    <input class="form-control" type="number" name="age" required>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Sex:</label>
+                                    <select class="form-select" name="sex" required>
+                                        <option value="" selected="">Please select...</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Contact Number:</label>
+                                    <input class="form-control" type="text" name="contact_number" maxLength=11 required>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px; text-align: center;">
+                                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                                </div>
+                            </form>
+
+                            <form class="row" method="POST" action="donation-form.php" enctype="multipart/form-data" style="padding: 12px; display: none;" id="donation-type-form">
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <h2>Donation Type</h2>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Type of Donation:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="donation_type[]" value="healthcare">
+                                        <label class="form-check-label">Healthcare</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="donation_type[]" value="cash">
+                                        <label class="form-check-label">Cash</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="donation_type[]" value="supplies">
+                                        <label class="form-check-label">Supplies</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px; text-align: center;">
+                                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                                </div>
+                            </form>
+
+                            <form class="row" method="POST" action="donation-form.php" enctype="multipart/form-data" style="padding: 12px; display: none;" id="donation-payment-form">
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <h2>Donation Payment</h2>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px; text-align: center;">
+                                    <h3>For cash donations:</h3>
+                                    <img src="assets/img/scantopay.jpeg" style="width:150px; height: 150px;">
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;text-align: center;">
+                                    <h2>Proof of Donation</h2>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Proof of Donations:</label>
+                                    <input type="file" name="proof_of_donation">
+                                </div>
+                                <div class="col-md-12" style="padding: 4px; text-align: center;">
+                                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                         </div>
+                        
+                    </div>
+                </div>
+
+                    
+                       
+            </div>
+        </div>
     </section>
+</main>
+
+        <script>
+            let currentForm = 0;
+            let forms = document.querySelectorAll('form');
+
+            function nextStep() {
+                forms[currentForm].style.display = 'none';
+                currentForm++;
+                forms[currentForm].style.display = 'block';
+            }
+
+            function previousStep() {
+                forms[currentForm].style.display = 'none';
+                currentForm--;
+                forms[currentForm].style.display = 'block';
+            }
+        </script>
+</body>
+</html>

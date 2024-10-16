@@ -74,47 +74,12 @@ function unsetAdminLoginSession() {
     unset($_SESSION['admin_logged_in']);
 }
 
-function create_member($first_name, $last_name, $email, $password, $confirm_password) {
+function insert_donation($donor_first_name, $donor_middle_name, $donor_last_name, $address, $age, $sex, $contact_number, $donation_type, $donation_items, $amount, $proof_of_donation) {
     global $conn;
-    
-
-    $sql = "SELECT * FROM agap_members WHERE m_email = ?";
+    $sql = "INSERT INTO donations (donor_first_name, donor_middle_name, donor_last_name, address, age, sex, contact_number, donation_type, donation_items, amount, proof_of_donation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
+    $stmt->bind_param("sssssisssss", $donor_first_name, $donor_middle_name, $donor_last_name, $address, $age, $sex, $contact_number, $donation_type, $donation_items, $amount, $proof_of_donation);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        return "Email already exists";
-    }
-
-    if ($password != $confirm_password) {
-        return "Passwords do not match";
-    }
-    
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO agap_members (m_fname, m_lname, m_email, mpassword) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
-    $stmt->execute();
-    if ($stmt->affected_rows > 0) {
-        return "Member account created successfully";
-    } else {
-        return "Error creating member account";
-    }
+    $stmt->close();
 }
-function setSchedule() {
-    $visitation_date = $_POST['visitation_date'];
-    $visitation_time = $_POST['visitation_time'];
-    $visitation_address = $_POST['visitation_address'];
-    $visitation_purpose = $_POST['visitation_purpose'];
-    $visitation_status = $_POST['visitation_status'];
- 
-    $query = "INSERT INTO visitations (visitation_date, visitation_time, visitation_address, visitation_purpose, visitation_status) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssss", $visitation_date, $visitation_time, $visitation_address, $visitation_purpose, $visitation_status);
-    $stmt->execute();
-
-    echo json_encode(array("message" => "Schedule set successfully"));
-  }
 ?>

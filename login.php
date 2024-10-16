@@ -59,7 +59,7 @@ $conn->close();
                             <button class="btn btn-primary" type="submit" style="margin-top: 10px;font-family: Aclonica, sans-serif;background: rgb(11,103,15);margin-bottom: 5PX;">LOG IN</button>
                             <div>
                                 <span style="color: rgb(255,255,255);">Don't have an account?&nbsp;</span>
-                                <a class="signup-nav" href="create-account.php">LOGIN&nbsp;</a></div>
+                                <a class="signup-nav" href="create-account.php">SIGNUP&nbsp;</a></div>
                         </form>
                     </div>
                 </div>

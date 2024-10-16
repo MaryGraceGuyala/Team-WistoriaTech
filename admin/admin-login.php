@@ -18,6 +18,7 @@
 $conn->close();
 ?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,18 +48,19 @@ $conn->close();
                         </div>
                         <form method="post" action="admin-login.php" style="padding: 12px;">
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <input class="form-control" type="text" id="email" name="email" placeholder="Email Address" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
+                                <label for="email">Email:</label>
+                                <input class="form-control" type="text" id="email" name="email" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <input class="form-control" type="password" id="password" name="password" placeholder="Password" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
+                                <label for="password">Create Password:</label>
+                                <input class="form-control" type="password" id="password" name="password" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
                             </div>
                             <div class="justify-content-between d-flex align-items-start" style="padding: 0px;color: rgb(255,255,255);">
                                 <div class="remember">
                                     <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Remember me</label></div>
                                 </div><a id="forgot" href="#">Forgot Password?</a>
                             </div><button class="btn btn-primary" type="submit" name="admin_login" style="margin-top: 10px;font-family: Aclonica, sans-serif;background: rgb(11,103,15);margin-bottom: 5PX;">LOG IN</button>
-                            <div><span style="color: rgb(255,255,255);">Don't have an account?&nbsp;</span>
-                            <a class="signup-nav" href="admin-create-account.php">SIGN UP</a></div>
+                            <div><span style="color: rgb(255,255,255);">Don't have an account?&nbsp;</span><a class="signup-nav" href="create-account.php">SIGN UP</a></div>
                         </form>
                     </div>
                 </div>

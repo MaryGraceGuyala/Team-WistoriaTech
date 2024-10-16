@@ -12,11 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($password == $cpassword) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO agap_members (m_fname, m_lname, m_email, mpassword) VALUES ('$fname', '$lname', '$email', '$hashed_password')";
+            $sql = "INSERT INTO members (m_fname, m_lname, m_email, mpassword) VALUES ('$fname', '$lname', '$email', '$hashed_password')";
             if (mysqli_query($conn, $sql)) {
                 echo "<script>alert('Signup successful!');</script>";
                 header('Location: members_dashboard.php');
-                exit();
+                exit(); 
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
@@ -28,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,10 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <form method="POST" action="create-account.php" style="padding: 12px;">
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                             <input class="form-control" type="text" name="m_fname" placeholder="First Name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
+                            <input class="form-control" type="text" name="m_fname" placeholder="First Name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
-                                <input class="form-control" type="text" name="m_lname" placeholder="Last Name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
+                            <input class="form-control" type="text" name="m_lname" placeholder="Last Name" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
                             </div>
                             <div class="d-flex input-fields" style="margin-top: 5px;margin-bottom: 5px;">
                             <input class="form-control" type="email" name="m_email" placeholder="Email Address" required style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;border-style: solid;">
@@ -84,4 +83,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
-         

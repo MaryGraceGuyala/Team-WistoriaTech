@@ -34,7 +34,7 @@
             </ul>
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="background: rgb(35,123,21);margin-right: 10px;">
-                    <img class="border rounded-circle" src="../assets/img/user%20(1).png" width="30px" height="30px" style="background: #ffffff;"></button>
+                    <img class="border rounded-circle" src="assets/img/user%20(1).png" width="30px" height="30px" style="background: #ffffff;"></button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="editprofile.php"><i class="fas fa-user-edit fs-5 text-dark"></i>Edit Profile</a>
                     <a class="dropdown-item" href="accountsetting.php"><i class="fas fa-user-cog fs-5 text-dark"></i>My Account</a>
