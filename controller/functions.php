@@ -13,7 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Function to register a new admin
+
 function registerAdmin($firstName, $lastName, $email, $password) {
     global $conn; 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -26,9 +26,9 @@ function registerAdmin($firstName, $lastName, $email, $password) {
     }
 }
 
-// Function to check if email already exists
+
 function emailExists($email) {
-    global $conn; // Use the global connection variable
+    global $conn; 
     $query = "SELECT * FROM agap_admin WHERE email = '$email'";
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
@@ -38,7 +38,6 @@ function emailExists($email) {
     }
 }
 
-// Function to validate password
 function validatePassword($password, $confirmPassword) {
     if ($password != $confirmPassword) {
         return false;
@@ -74,12 +73,4 @@ function unsetAdminLoginSession() {
     unset($_SESSION['admin_logged_in']);
 }
 
-function insert_donation($donor_first_name, $donor_middle_name, $donor_last_name, $address, $age, $sex, $contact_number, $donation_type, $donation_items, $amount, $proof_of_donation) {
-    global $conn;
-    $sql = "INSERT INTO donations (donor_first_name, donor_middle_name, donor_last_name, address, age, sex, contact_number, donation_type, donation_items, amount, proof_of_donation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssisssss", $donor_first_name, $donor_middle_name, $donor_last_name, $address, $age, $sex, $contact_number, $donation_type, $donation_items, $amount, $proof_of_donation);
-    $stmt->execute();
-    $stmt->close();
-}
 ?>

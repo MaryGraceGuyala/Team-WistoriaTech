@@ -1,4 +1,30 @@
-<<<<<<< HEAD
+<?php
+include 'php/dbconnect.php';
+include 'controller/functions.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $donorData = [
+        'first_name' => $_POST['donor_first_name'],
+        'middle_name' => $_POST['donor_middle_name'],
+        'last_name' => $_POST['donor_last_name'],
+        'address' => $_POST['address'],
+        'age' => $_POST['age'],
+        'sex' => $_POST['sex'],
+        'contact_number' => $_POST['contact_number']
+    ];
+
+    $donationData = [
+        'donation_type' => isset($_POST['donation_type']) ? $_POST['donation_type'] : [],
+        'donation_items' => $_POST['donation_items'],
+        'amount' => $_POST['amount'],
+        'quantity' => $_POST['Quantity'],
+        'proof_of_donation' => $_FILES['proof_of_donation']['name'] 
+    ];
+
+
+    saveDonationEntry($donorData, $donationData);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +32,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>LOGIN FOR ADMIN</title>
+    <title>Donate Now</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica&amp;display=swap">
@@ -105,6 +131,10 @@
                                         <label class="form-check-label">Supplies</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Donation Items:</label>
+                                    <input class="form-control" type="text" name="donation_items" maxLength=11 required>
+                                </div>
                                 <div class="col-md-12" style="padding: 4px; text-align: center;">
                                     <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
                                     <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
@@ -118,6 +148,17 @@
                                 <div class="col-md-12" style="padding: 4px; text-align: center;">
                                     <h3>For cash donations:</h3>
                                     <img src="assets/img/scantopay.jpeg" style="width:150px; height: 150px;">
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Amount:</label>
+                                    <input class="form-control" type="text" name="amount" maxLength=11 required>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px; text-align: center;">
+                                    <h3>For healthcare and supplies donations:</h3>
+                                </div>
+                                <div class="col-md-12" style="padding: 4px;">
+                                    <label class="form-label">Quantity:</label>
+                                    <input class="form-control" type="text" name="Quantity" maxLength=11 required>
                                 </div>
                                 <div class="col-md-12" style="padding: 4px;text-align: center;">
                                     <h2>Proof of Donation</h2>
@@ -161,43 +202,3 @@
         </script>
 </body>
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>LOGIN FOR ADMIN</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Acme&amp;display=swap">
-    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/Hero-Clean-Reverse.css">
-    <link rel="stylesheet" href="assets/css/Navbar-Right-Links.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-
-<body class="index-page" data-aos-easing="ease-in-out" data-aos-duration="600" data-aos-delay="0">
-    <header id="header" class="header d-flex align-items-center fixed-top">
-        <div class="container-fluid position-relative d-flex align-items-center justify-content-between"><a class="logo d-flex align-items-center me-auto me-xl-0" href="index.php"><img src="assets/img/AgapConnect%20(3).png" style="width: 150px;height: 50px;"></a>
-            <nav class="navbar navbar-light navbar-expand-md text-center navmenu" id="navmenu">
-                <div class="container-fluid"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navcol-1">
-                        <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-                            <li class="nav-item d-flex align-items-lg-center dropdown"><a class="nav-link d-flex justify-content-between align-items-lg-center" href="#">About Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Our Team</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav><a class="order-last" href="#donations" style="padding: 15px;color: rgb(255,255,255);background: #018f42;text-decoration: none;border-radius: 4px;padding-right: 5px;padding-top: 10px;padding-bottom: 10px;padding-left: 5px;">Donate Now</a>
-        </div>
-    </header>
-    <section class="section dashboard">
-        
-    </section>
->>>>>>> 933a6feee2714f553ec78974a4c6a8cc5d92a6ad

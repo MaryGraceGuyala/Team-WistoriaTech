@@ -1,3 +1,11 @@
+<?php
+include '../php/dbconnect.php';
+
+$sql = "SELECT donor_first_name donor_middle_name donor_last_name address age sex contact_number donation_type donation_items Quantity amount proof_of_donation date_of_donation FROM donations";
+$result = $conn->query($sql);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -127,41 +135,43 @@
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">First Name</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Middle Name</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Last Name</button></th>
+                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Address</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Age</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Sex</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Civil Status</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Address</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Contact Number</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Type of Donation</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Donation Items</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Quantity&nbsp;</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Amount</button></th>
+                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Proof of Donation</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Donation Date</button></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr style="text-align: center;">
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td class="text-center" style="border-style: none;"></td>
-                                            </tr>
-                                            <tr style="text-align: center;">
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;text-align: center;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td class="text-center" style="border-style: none;"></td>
-                                            </tr>
-                                            <tr style="text-align: center;">
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td class="text-center" style="border-style: none;"></td>
-                                            </tr>
-                                        </tbody>
+                                        <?php
+                                    if ($result->num_rows > 0) {
+                                     
+                                        while($row = $result->fetch_assoc()) {
+                                            echo "<tr style='text-align: center;'>";
+                                            echo "<td>{$row['donor_first_name']}</td>";
+                                            echo "<td>{$row['donor_middle_name']}</td>";
+                                            echo "<td>{$row['donor_last_name']}</td>";
+                                            echo "<td>{$row['address']}</td>";
+                                            echo "<td>{$row['age']}</td>";
+                                            echo "<td>{$row['sex']}</td>";
+                                            echo "<td>{$row['contact_number']}</td>";
+                                            echo "<td>{$row['donation_type']}</td>";
+                                            echo "<td>{$row['donation_items']}</td>";
+                                            echo "<td>{$row['amount']}</td>";
+                                            echo "<td>{$row['Quantity']}</td>";
+                                            echo "<td>{$row['proof_of_donation']}</td>";
+                                            echo "<td>{$row['donation_date']}</td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='13' style=' text-align: center;'>No donation records found.</td></tr>";
+                                    }
+                                    ?>
+                                </tbody>
                                     </table>
                                 </div>
                             </div>

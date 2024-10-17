@@ -2,46 +2,6 @@
 include 'php/dbconnect.php';
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $assistance_type = $_POST['assistance_type'];
-    $fname = $_POST['fname'];
-    $mname = $_POST['mname'];
-    $lname = $_POST['lname'];
-    $birthdate = $_POST['birthdate'];
-    $age = $_POST['age'];
-    $address = $_POST['address'];
-    $sex = $_POST['sex'];
-    $civil_status = $_POST['civil_status'];
-    $contact_number = $_POST['contact_number'];
-    $household_income = $_POST['household_income'];
-    $medical_diagnosis = $_POST['medical_diagnosis'];
-    $patient_type = $_POST['patient_type'];
-    $hospital = $_POST['hospital'];
-    $representative_name = $_POST['representative_name'];
-    $representative_age = $_POST['representative_age'];
-    $representative_relationship = $_POST['representative_relationship'];
-    $representative_contact_number = $_POST['representative_contact_number'];
-
-   
-    if (empty($assistance_type) || empty($fname) || empty($mname) || empty($lname) || empty($birthdate) || empty($age) || empty($address) || empty($sex) || empty($civil_status) || empty($contact_number) || empty($household_income)) {
-        echo "Please fill out all fields.";
-        exit;
-    }
-
-   
-    $sql = "INSERT INTO assistance_requests (assistance_type, fname, mname, lname, birthdate, age, address, sex, civil_status, contact_number, household_income, medical_diagnosis, patient_type, hospital, representative_name, representative_age, representative_relationship, representative_contact_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssssssssssssss", $assistance_type, $fname, $mname, $lname, $birthdate, $age, $address, $sex, $civil_status, $contact_number, $household_income, $medical_diagnosis, $patient_type, $hospital, $representative_name, $representative_age, $representative_relationship, $representative_contact_number);
-    $stmt->execute();
-
- 
-    if ($stmt->affected_rows > 0) {
-        echo "Application submitted successfully.";
-        header("Location: request_status.php")
-    } else {
-        echo "Error submitting application.";
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Apply for Assistance</title>
+    <title>Apply for Membership</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aclonica&amp;display=swap">

@@ -40,9 +40,13 @@ while ($row = $result->fetch_assoc()) {
     <header class="justify-content-between header fixed-top d-flex align-items-center" id="header" style="padding: 4px;background: url(&quot;assets/img/background.png&quot;) center / cover no-repeat, rgb(255,255,255);">
         <div class="d-flex align-items-center justify-content-between" style="gap: 15px">
             <i class="fas fa-bars toggle-sidebar-btn" style="color: rgb(0,0,0);"></i>
-            <a href="#"><img src="../assets/img/AgapConnect%20(3).png" width="150px" height="40px"></a></div>
+            <a href="#">
+                <img src="../assets/img/AgapConnect%20(3).png" width="150px" height="40px">
+            </a>
+        </div>
         <div class="search-bar" style="margin-right: 25px;margin-left: 100px;">
-            <form class="search-form d-flex align-items-center"><input class="form-control" type="text" style="border-top-left-radius: 4px;border-top-right-radius: 0px;border-bottom-right-radius: 0px;" placeholder="Search here..."><button class="btn btn-primary" type="button" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;"><i class="fas fa-search" style="border-color: rgb(25,95,49);color: rgb(25,95,49);"></i></button></form>
+            <form class="search-form d-flex align-items-center">
+                <input class="form-control" type="text" style="border-top-left-radius: 4px;border-top-right-radius: 0px;border-bottom-right-radius: 0px;" placeholder="Search here..."><button class="btn btn-primary" type="button" style="border-top-left-radius: 0px;border-bottom-left-radius: 0px;"><i class="fas fa-search" style="border-color: rgb(25,95,49);color: rgb(25,95,49);"></i></button></form>
         </div>
         <nav class="d-flex justify-content-between align-items-lg-center header-nav ms-auto" style="gap: 10px">
             <ul class="d-lg-flex align-items-lg-center d-flex align-items-center" style="gap:10px;">
@@ -124,7 +128,9 @@ while ($row = $result->fetch_assoc()) {
         <div class="d-flex justify-content-between page-title">
             <h1 style="font-family: Acme, sans-serif;font-size: 26px;">Visitations</h1>
             <div>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-schedule"><i class="fas fa-plus"></i> Add New Schedule</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-schedule">
+                    <i class="fas fa-plus"></i> Add New Schedule
+                </button>
                 <div class="modal fade" tabindex="-1" id="new-schedule">
                     <div class="modal-dialog modal-dialog-scrollable">
                         <div class="modal-content">
