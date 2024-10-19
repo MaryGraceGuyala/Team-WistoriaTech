@@ -1,54 +1,11 @@
 <?php
 include '../php/dbconnect.php';
 
-$families_assisted = $conn->query("SELECT COUNT(*) FROM tblbeneficiary");
-if ($families_assisted === false) {
-    echo "Error: " . $conn->error;
-    exit;
-}
+$query = "SELECT * FROM visitations";
+$result = $conn->query($query);
 
-$members = $conn->query("SELECT COUNT(*) FROM agap_members");
-if ($members === false) {
-    echo "Error: " . $conn->error;
-    exit;
-}
-
-$donations = $conn->query("SELECT SUM(amount) FROM donations");
-if ($donations === false) {
-    echo "Error: " . $conn->error;
-    exit;
-}
-
-$medicines = $conn->query("SELECT COUNT(*) FROM medicines");
-if ($medicines === false) {
-    echo "Error: " . $conn->error;
-    exit;
-}
-
-$visitations = $conn->query("SELECT * FROM visitations");
-if ($visitations === false) {
-    echo "Error: " . $conn->error;
-    exit;
-}
-
-// Store data in variables
-$families_assisted_count = $families_assisted->fetch_assoc()['COUNT(*)'];
-$members_count = $members->fetch_assoc()['COUNT(*)'];
-$donations_amount = $donations->fetch_assoc()['SUM(amount)'];
-$medicines_count = $medicines->fetch_assoc()['COUNT(*)'];
-$visitations_data = $visitations->fetch_all(MYSQLI_ASSOC);
-
-// Close connection
 $conn->close();
 
-// Output data as JSON
-echo json_encode([
-    'tblbeneficiary' => $families_assisted_count,
-    'agap_members' => $members_count,
-    'donations' => $donations_amount,
-    'medicines' => $medicines_count,
-    'visitations' => $visitations_data
-]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +80,7 @@ echo json_encode([
     <aside id="sidebar" class="sidebar">
         <ul id="sidebar-nav" class="sidebar-nav">
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="home.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="admin_dashboard.php" style="font-size: 16px;">
                     <i class="fas fa-tachometer-alt"></i><span style="padding-left: 5px;">Dashboard</span>
                 </a>
             </li>
@@ -138,7 +95,7 @@ echo json_encode([
                 </a>
             </li>
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="donations.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="donations_info.php" style="font-size: 16px;">
                     <i class="fas fa-boxes"></i><span style="padding-left: 5px;">Donations</span>
                 </a>
             </li>
@@ -150,12 +107,12 @@ echo json_encode([
                 </a>
                 <ul id="requests-nav" class="nav-content collapse show">
                     <li class="nav-item">
-                        <a href="assistance_requests.php">
+                        <a href="assistance_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Assistance Requests</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="membership_requests.php">
+                        <a href="membership_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Membership Requests</span>
                         </a>
                     </li>
@@ -319,27 +276,21 @@ echo json_encode([
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">09/23/2024</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">4:00 PM</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Danao, Bulan, Sorsogon</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Barangay Chapter Meeting</td>
-                                                            <td class="text-center" style="border-style: none;"><span class="badge bg-success" style="border-top-left-radius: 4px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;font-family: Acme, sans-serif;">Done</span></td>
-                                                        </tr>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">10/3/2024</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;text-align: center;">10:00 AM</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">San Ramon, Bulan, Sorsogon</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Barangay Chapter Meeting</td>
-                                                            <td class="text-center" style="border-style: none;"><span class="badge bg-danger" style="border-top-left-radius: 4px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;font-family: Acme, sans-serif;">Cancelled</span></td>
-                                                        </tr>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">10/3/2024</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">1:00 PM</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">E. Quirino, Bulan, Sorsogon</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Barangay Chapter Meeting</td>
-                                                            <td class="text-center" style="border-style: none;"><span class="badge bg-success" style="border-top-left-radius: 4px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;font-family: Acme, sans-serif;">On-going</span></td>
-                                                        </tr>
+                                                    <?php
+                                                    if ($result->num_rows > 0) {
+                                                    
+                                                        while($row = $result->fetch_assoc()) {
+                                                            echo "<tr style='text-align: center;'>";
+                                                            echo "<td>{$row['visitation_date']}</td>";
+                                                            echo "<td>{$row['visitation_time']}</td>";
+                                                            echo "<td>{$row['visitation_address']}</td>";
+                                                            echo "<td>{$row['visitation_purpose']}</td>";
+                                                            echo "<td>{$row['visitation_status']}</td>";
+                                                        }
+                                                    } else {
+                                                        echo "<tr><td colspan='13' style=' text-align: center;'>No records found.</td></tr>";
+                                                    }
+                                                    ?>
                                                     </tbody>
                                                 </table>
                                             </div>

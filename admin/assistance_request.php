@@ -1,3 +1,10 @@
+<?php
+include '../php/dbconnect.php';
+
+$query = "SELECT * FROM assistance_requests";
+$result = $conn->query($query);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +56,7 @@
     <aside id="sidebar" class="sidebar">
         <ul id="sidebar-nav" class="sidebar-nav">
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="home.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="admin_dashboard.php" style="font-size: 16px;">
                     <i class="fas fa-tachometer-alt"></i><span style="padding-left: 5px;">Dashboard</span>
                 </a>
             </li>
@@ -64,7 +71,7 @@
                 </a>
             </li>
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="donations.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="donations_info.php" style="font-size: 16px;">
                     <i class="fas fa-boxes"></i><span style="padding-left: 5px;">Donations</span>
                 </a>
             </li>
@@ -76,12 +83,12 @@
                 </a>
                 <ul id="requests-nav" class="nav-content collapse show">
                     <li class="nav-item">
-                        <a href="assistance_requests.php">
+                        <a href="assistance_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Assistance Requests</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="membership_requests.php">
+                        <a href="membership_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Membership Requests</span>
                         </a>
                     </li>
@@ -276,35 +283,36 @@
                                                 <table class="table">
                                                     <thead>
                                                         <tr style="border-style: none;background: rgb(211,227,201);font-family: ABeeZee, sans-serif;">
-                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Date</button></th>
-                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Time</button></th>
-                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Address</button></th>
-                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Purpose</button></th>
+                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">#</button></th>
+                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">First Name</button></th>
+                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Last Name</button></th>
+                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Assistance Type</button></th>
+                                                            <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Application Date</button></th>
                                                             <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Status</button></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">09/23/2024</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">4:00 PM</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Danao, Bulan, Sorsogon</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Barangay Chapter Meeting</td>
-                                                            <td class="text-center" style="border-style: none;"><span class="badge bg-success" style="border-top-left-radius: 4px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;font-family: Acme, sans-serif;">Done</span></td>
+                                                    <?php if ($result->num_rows > 0): ?>
+                                                    <?php while($row = $result->fetch_assoc()): ?>
+                                                        <tr class="text-center">
+                                                            <td><?php echo $row['id']; ?></td>
+                                                            <td><?php echo htmlspecialchars($row['fname']); ?></td> 
+                                                            <td><?php echo htmlspecialchars($row['lname']); ?></td> 
+                                                            <td><?php echo htmlspecialchars($row['assistance_type']); ?></td> 
+                                                            <td><?php echo htmlspecialchars($row['created_at']); ?></td> 
+                                                            <td><?php echo htmlspecialchars($row['status']); ?></td> 
+                                                            <td>
+                                                                <a href="view-assistance-application.php?id=<?php echo $row['id']; ?>" class="btn btn-success">View</a> 
+                                                                <button class="btn btn-danger">Delete</button>
+                                                            </td>
                                                         </tr>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">10/3/2024</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;text-align: center;">10:00 AM</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">San Ramon, Bulan, Sorsogon</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Barangay Chapter Meeting</td>
-                                                            <td class="text-center" style="border-style: none;"><span class="badge bg-danger" style="border-top-left-radius: 4px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;font-family: Acme, sans-serif;">Cancelled</span></td>
-                                                        </tr>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">10/3/2024</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">1:00 PM</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">E. Quirino, Bulan, Sorsogon</td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;">Barangay Chapter Meeting</td>
-                                                            <td class="text-center" style="border-style: none;"><span class="badge bg-success" style="border-top-left-radius: 4px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;font-family: Acme, sans-serif;">On-going</span></td>
-                                                        </tr>
+                                                    <?php endwhile; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No records found.</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                                    </tbody>
                                                     </tbody>
                                                 </table>
                                             </div>

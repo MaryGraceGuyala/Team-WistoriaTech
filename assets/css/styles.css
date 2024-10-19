@@ -916,3 +916,20 @@ user agent stylesheet button {
     position: relative;
   }
 }
+
+.step-indicator .step {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 3px solid hsl(0, 0%, 100%);
+}
+
+
+
+.step-content {
+  display: none;
+}
+
+.step-content.active {
+  display: flex;
+}

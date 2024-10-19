@@ -1,3 +1,28 @@
+<?php
+include '../php/dbconnect.php'; 
+
+if (isset($_GET['id'])) {
+    $members_id = intval($_GET['id']);
+    
+  
+    $query = "SELECT * FROM membership_requests WHERE members_id = ?";
+    $stmt = $conn->prepare($query);
+    
+    if ($stmt === false) {
+        die('Prepare failed: ' . htmlspecialchars($conn->error));
+    }
+    
+    $stmt->bind_param("i", $members_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $memberDetails = $result->fetch_assoc(); 
+
+     
+        $stmt->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,7 +85,7 @@
     <aside id="sidebar" class="sidebar">
         <ul id="sidebar-nav" class="sidebar-nav">
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="home.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="admin_dashboard.php" style="font-size: 16px;">
                     <i class="fas fa-tachometer-alt"></i><span style="padding-left: 5px;">Dashboard</span>
                 </a>
             </li>
@@ -75,7 +100,7 @@
                 </a>
             </li>
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="donations.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="donations_info.php" style="font-size: 16px;">
                     <i class="fas fa-boxes"></i><span style="padding-left: 5px;">Donations</span>
                 </a>
             </li>
@@ -87,12 +112,12 @@
                 </a>
                 <ul id="requests-nav" class="nav-content collapse show">
                     <li class="nav-item">
-                        <a href="assistance_requests.php">
+                        <a href="assistance_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Assistance Requests</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="membership_requests.php">
+                        <a href="membership_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Membership Requests</span>
                         </a>
                     </li>
@@ -136,40 +161,28 @@
                                     <table class="table">
                                         <thead>
                                             <tr class="text-center" style="border-style: none;background: rgb(211,227,201);font-family: ABeeZee, sans-serif;">
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">First Name</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Middle Name</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Last Name</button></th>
+                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Name</button></th>
+                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Address</button></th>
+                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Birthdate</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Age</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Sex</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Civil Status</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Birthdate</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Address</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Contact Number</button></th>
+                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Work</button></th>
                                                 <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">Monthly Household Income</button></th>
-                                                <th class="datatable-descending" data-sortable="true" scope="col" aria-sort="descending" style="border-style: none;background: rgba(255,255,255,0);"><button class="btn btn-primary datatable-sorter" type="button">List of Beneficiaries</button></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr style="text-align: center;">
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td class="text-center" style="border-style: none;"></td>
-                                            </tr>
-                                            <tr style="text-align: center;">
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;text-align: center;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td class="text-center" style="border-style: none;"></td>
-                                            </tr>
-                                            <tr style="text-align: center;">
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                <td class="text-center" style="border-style: none;"></td>
+                                            <tr>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_name']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_address']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_birthdate']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_age']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_civil_status']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_gender']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_contact_number']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_work']); ?></td>
+                                                <td style="border-style: none;font-family: Acme, sans-serif;"><?php echo htmlspecialchars($memberDetails['members_household_income']); ?></td>
                                             </tr>
                                         </tbody>
                                     </table>

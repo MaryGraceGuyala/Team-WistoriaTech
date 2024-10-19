@@ -1,30 +1,3 @@
-<?php
-include 'php/dbconnect.php';
-include 'controller/functions.php';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $donorData = [
-        'first_name' => $_POST['donor_first_name'],
-        'middle_name' => $_POST['donor_middle_name'],
-        'last_name' => $_POST['donor_last_name'],
-        'address' => $_POST['address'],
-        'age' => $_POST['age'],
-        'sex' => $_POST['sex'],
-        'contact_number' => $_POST['contact_number']
-    ];
-
-    $donationData = [
-        'donation_type' => isset($_POST['donation_type']) ? $_POST['donation_type'] : [],
-        'donation_items' => $_POST['donation_items'],
-        'amount' => $_POST['amount'],
-        'quantity' => $_POST['Quantity'],
-        'proof_of_donation' => $_FILES['proof_of_donation']['name'] 
-    ];
-
-
-    saveDonationEntry($donorData, $donationData);
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="container-fluid"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navcol-1">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-                            <li class="nav-item d-flex align-items-lg-center dropdown"><a class="nav-link d-flex justify-content-between align-items-lg-center" href="#">About Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Our Team</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="index.php">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.php#services">Services</a></li>
+                            <li class="nav-item"><a class="nav-link d-flex justify-content-between align-items-lg-center" href="index.php#about">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.php#team">Our Team</a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.php#contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -108,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input class="form-control" type="text" name="contact_number" maxLength=11 required>
                                 </div>
                                 <div class="col-md-12" style="padding: 4px; text-align: center;">
-                                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                                    <button type="button" class="btn btn-primary" style="background: rgb(19,77,70);" onclick="nextStep()">Next</button>
                                 </div>
                             </form>
 
@@ -136,8 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input class="form-control" type="text" name="donation_items" maxLength=11 required>
                                 </div>
                                 <div class="col-md-12" style="padding: 4px; text-align: center;">
-                                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
-                                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+                                    <button type="button" class="btn btn-primary" style="background: rgb(19,77,70);" onclick="previousStep()">Previous</button>
+                                    <button type="button" class="btn btn-primary" style="background: rgb(19,77,70);" onclick="nextStep()">Next</button>
                                 </div>
                             </form>
 
@@ -168,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input type="file" name="proof_of_donation">
                                 </div>
                                 <div class="col-md-12" style="padding: 4px; text-align: center;">
-                                    <button type="button" class="btn btn-primary" onclick="previousStep()">Previous</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-primary" style="background: rgb(19,77,70);" onclick="previousStep()">Previous</button>
+                                    <button type="submit" class="btn btn-primary" style="background: rgb(19,77,70);">Submit</button>
                                 </div>
                             </form>
                          </div>

@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $representative_age = $_POST['representative_age'];
     $representative_relationship = $_POST['representative_relationship'];
     $representative_contact_number = $_POST['representative_contact_number'];
+    
 
    
     if (empty($assistance_type) || empty($fname) || empty($mname) || empty($lname) || empty($birthdate) || empty($age) || empty($address) || empty($sex) || empty($civil_status) || empty($contact_number) || empty($household_income)) {

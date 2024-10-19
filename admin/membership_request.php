@@ -1,3 +1,10 @@
+<?php
+include '../php/dbconnect.php';
+
+$query = "SELECT * FROM membership_requests";
+$result = $conn->query($query);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +55,7 @@
     <aside id="sidebar" class="sidebar">
         <ul id="sidebar-nav" class="sidebar-nav">
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="home.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="admin_dashboard.php" style="font-size: 16px;">
                     <i class="fas fa-tachometer-alt"></i><span style="padding-left: 5px;">Dashboard</span>
                 </a>
             </li>
@@ -63,7 +70,7 @@
                 </a>
             </li>
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="donations.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="donations_info.php" style="font-size: 16px;">
                     <i class="fas fa-boxes"></i><span style="padding-left: 5px;">Donations</span>
                 </a>
             </li>
@@ -75,12 +82,12 @@
                 </a>
                 <ul id="requests-nav" class="nav-content collapse show">
                     <li class="nav-item">
-                        <a href="assistance_requests.php">
+                        <a href="assistance_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Assistance Requests</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="membership_requests.php">
+                        <a href="membership_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Membership Requests</span>
                         </a>
                     </li>
@@ -182,28 +189,26 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"><a class="btn btn-primary" role="button">View Application</a></td>
-                                                            <td class="text-center" style="border-style: none;"></td>
+                                                    <?php if ($result->num_rows > 0): ?>
+                                                    <?php while($row = $result->fetch_assoc()): ?>
+                                                        <tr class="text-center">
+                                                            <td><?php echo $row['members_id']; ?></td>
+                                                            <td><?php echo htmlspecialchars($row['members_name']); ?></td> 
+                                                            <td><?php echo htmlspecialchars($row['created_at']); ?></td> 
+                                                            <td>
+                                                                <a href="view-application.php?id=<?php echo $row['members_id']; ?>" class="btn btn-success">View</a> 
+                                                                <button class="btn btn-danger">Delete</button>
+                                                            </td>
                                                         </tr>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;text-align: center;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td class="text-center" style="border-style: none;"></td>
-                                                        </tr>
-                                                        <tr style="text-align: center;">
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td style="border-style: none;font-family: Acme, sans-serif;"></td>
-                                                            <td class="text-center" style="border-style: none;"></td>
-                                                        </tr>
+                                                    <?php endwhile; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No records found.</td>
+                                                    </tr>
+                                                <?php endif; ?>
                                                     </tbody>
+                                                        
+                
                                                 </table>
                                             </div>
                                         </div>

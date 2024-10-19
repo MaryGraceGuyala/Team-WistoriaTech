@@ -4,19 +4,25 @@ include '../controller/functions.php';
 include '../php/calendar.php';
 $calendar = new Calendar();
 
-$query = "SELECT * FROM visitations";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $visitation_date = $_POST['visitation_date'];
+    $visitation_time = $_POST['visitation_time'];
+    $visitation_address = $_POST['visitation_address'];
+    $visitation_purpose = $_POST['visitation_purpose'];
+    $visitation_status = $_POST['visitation_status'];
 
-$result = $conn->query($query);
-$schedules = array();
 
-while ($row = $result->fetch_assoc()) {
-    $schedules[] = array(
-        'date' => $row['visitation_date'],
-        'time' => $row['visitation_time'],
-        'address' => $row['visitation_address'],
-        'purpose' => $row['visitation_purpose'],
-        'status' => $row['visitation_status']
-    );
+    $sql = "INSERT INTO visitations (visitation_date, visitation_time, visitation_address, visitation_purpose, visitation_status) 
+            VALUES ('$visitation_date', '$visitation_time', '$visitation_address', '$visitation_purpose', '$visitation_status')";
+
+    if (mysqli_query($conn, $sql)) {
+    
+        
+        header("Location: admin_dashboard.php");
+        exit();
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
 }
 
 ?>
@@ -74,7 +80,7 @@ while ($row = $result->fetch_assoc()) {
     <aside id="sidebar" class="sidebar">
         <ul id="sidebar-nav" class="sidebar-nav">
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="home.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="admin_dashboard.php" style="font-size: 16px;">
                     <i class="fas fa-tachometer-alt"></i><span style="padding-left: 5px;">Dashboard</span>
                 </a>
             </li>
@@ -89,7 +95,7 @@ while ($row = $result->fetch_assoc()) {
                 </a>
             </li>
             <li class="nav-item" style="color: rgb(13,13,13);">
-                <a class="d-xl-flex nav-link" href="donations.php" style="font-size: 16px;">
+                <a class="d-xl-flex nav-link" href="donations_info.php" style="font-size: 16px;">
                     <i class="fas fa-boxes"></i><span style="padding-left: 5px;">Donations</span>
                 </a>
             </li>
@@ -101,12 +107,12 @@ while ($row = $result->fetch_assoc()) {
                 </a>
                 <ul id="requests-nav" class="nav-content collapse show">
                     <li class="nav-item">
-                        <a href="assistance_requests.php">
+                        <a href="assistance_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Assistance Requests</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="membership_requests.php">
+                        <a href="membership_request.php">
                             <i class="fas fa-file-contract"></i><span>&nbsp; Membership Requests</span>
                         </a>
                     </li>
@@ -143,7 +149,7 @@ while ($row = $result->fetch_assoc()) {
                                 </div>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form method="POST" action="visitations.php">
                                     <div class="row">
                                         <div class="col-md-12" style="padding: 4px;">
                                             <label class="form-label">Date</label>
@@ -163,19 +169,19 @@ while ($row = $result->fetch_assoc()) {
                                         </div>
                                         <div class="col-md-12" style="padding: 4px;">
                                             <label class="form-label">Status</label>
-                                            <select class="form-select">
+                                            <select class="form-select" name="visitation_status">
                                                 <option value="" selected="">Please select...</option>
-                                                <option name="visitation_status" value="done">Done</option>
-                                                <option name="visitation_status" value="pending">Pending</option>
-                                                <option name="visitation_status" value="cancelled">Cancelled</option>
+                                                <option  value="done">Done</option>
+                                                <option  value="pending">Pending</option>
+                                                <option  value="cancelled">Cancelled</option>
                                             </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -199,35 +205,6 @@ while ($row = $result->fetch_assoc()) {
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/script.js"></script>
-    <script>
-    saveButton.addEventListener('click', () => {
- 
-  const formData = new FormData(document.querySelector('form'));
-  const visitation_date = formData.get('visitation_date');
-  const visitation_time = formData.get('visitation_time');
-  const visitation_address = formData.get('visitation_address');
-  const visitation_purpose = formData.get('visitation_purpose');
-  const visitation_status = formData.get('visitation_status');
-
-  
-  fetch('visitations.php', {
-    method: 'POST',
-    body: JSON.stringify({
-      visitation_date,
-      visitation_time,
-      visitation_address,
-      visitation_purpose,
-      visitation_status
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(data => console.log(data.message))
-  .catch(error => console.error(error));
-});
-</script>
 </body>
 
 </html>
